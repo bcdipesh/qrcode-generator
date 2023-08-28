@@ -1,4 +1,5 @@
 import os
+from pprint import pprint
 
 from dotenv import load_dotenv
 from flask import Flask, render_template
@@ -32,6 +33,17 @@ def home_page():
     
     form = QRCodeForm()
 
+    return render_template("home.html", form=form)
+
+
+@app.route("/generate-qr-code", methods=["POST"])
+def generate_qr_code():
+    """
+        Generate a QR Code using the free API
+    """
+    
+    form = QRCodeForm()
+    
     if form.validate_on_submit():
         # Process the form data
         content = form.content.data
@@ -44,5 +56,9 @@ def home_page():
         margin = form.margin.data
         qzone = form.qzone.data
         file_format = form.file_format.data
-
+        
+        pprint(form.data)
+    
     return render_template("home.html", form=form)
+    
+
