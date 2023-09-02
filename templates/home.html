@@ -1,53 +1,23 @@
-{% extends 'base.html' %}
-
-{% block title %} | Home{% endblock %}
-
-{% block content %}
+{% extends 'base.html' %} {% block title %} | Home{% endblock %} {% block
+content %}
 <div class="container home">
-    <section class="mt-4">
-        <form>
-            <fieldset>
-                <legend>Parameters for QR Code</legend>
-                <div class="form-group">
-                    <label for="data" class="form-label mt-4">Data</label>
-                    <input type="text" name="data" id="data" class="form-control"
-                        placeholder="The text to store within the QR Code...">
-                </div>
-                <div class="form-group">
-                    <label for="size" class="form-label mt-4">Size</label>
-                    <input type="text" name="size" id="size" class="form-control"
-                        placeholder="The size of the QR Code image. Ex: 10, 10">
-                </div>
-                <div class="form-group">
-                    <legend class="mt-4">Charset Source</legend>
-                    <div class="form-check">
-                        <label for="charset-sr-1" class="form-check-label">UTF-8</label>
-                        <input type="radio" name="charset-sr" id="charset-sr-1" class="form-check-input" value="UTF-8"
-                            checked>
-                    </div>
-                    <div class="form-check">
-                        <label for="charset-sr-2" class="form-check-label">ISO-8859-1</label>
-                        <input type="radio" name="charset-sr" id="charset-sr-2" class="form-check-input"
-                            value="ISO-8859-1">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <legend class="mt-4">Charset Target</legend>
-                    <div class="form-check">
-                        <label for="charset-tr-1" class="form-check-label">UTF-8</label>
-                        <input type="radio" name="charset-tr" id="charset-tr-1" class="form-check-input" value="UTF-8"
-                            checked>
-                    </div>
-                    <div class="form-check">
-                        <label for="charset-tr-2" class="form-check-label">ISO-8859-1</label>
-                        <input type="radio" name="charset-tr" id="charset-tr-2" class="form-check-input"
-                            value="ISO-8859-1">
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary mt-4">Submit</button>
-            </fieldset>
-        </form>
-    </section>
+  <section class="mt-4">
+    <form action="/generate-qr-code" method="post">
+      {{ form.hidden_tag() }}
 
+      {% for field in form if field.widget.input_type != 'hidden' %}
+      <div class="form-group">
+        {{ field.label(class_="mt-4") }}
+        {{ field(class_="form-control") }}
+
+        {% for error in field.errors %}
+        <small class="text-danger">{{ error }}</span>
+          {% endfor %}
+      </div>
+      {% endfor %}
+
+      <button class="btn btn-primary" type="submit">Generate my QRCode</button>
+    </form>
+  </section>
 </div>
 {% endblock %}

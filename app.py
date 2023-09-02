@@ -1,9 +1,11 @@
 import os
+from pprint import pprint
+
 from dotenv import load_dotenv
-
-from models import User, QR_Code, QR_Code_Usage_Statistics, connect_db, db
-
 from flask import Flask, render_template
+
+from forms import QRCodeForm
+from models import QR_Code, QR_Code_Usage_Statistics, User, connect_db, db
 
 # Load environment variables
 load_dotenv()
@@ -14,6 +16,7 @@ app.config[
     "SQLALCHEMY_DATABASE_URI"
 ] = f"postgresql://postgres:{os.environ.get('DB_PASSWORD')}@localhost/qrcode_generator"
 app.config["SQLALCHEMY_ECHO"] = True
+app.config["SECRET_KEY"] = "QRCode Generator"
 
 connect_db(app)
 
