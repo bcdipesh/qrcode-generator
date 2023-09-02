@@ -29,3 +29,10 @@ def home_page():
     """Display home page"""
 
     return render_template("home.html")
+
+
+@app.route("/about")
+def about_page():
+    """Display about page"""
+
+    return render_template("about.html")
