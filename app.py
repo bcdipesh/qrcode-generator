@@ -30,12 +30,6 @@ connect_db(app)
 @app.route("/")
 def home_page():
     """Display home page"""
+    form = QRCodeForm()
 
-    return render_template("home.html")
-
-
-@app.route("/about")
-def about_page():
-    """Display about page"""
-
-    return render_template("about.html")
+    return render_template("home.html", form=form)
