@@ -35,8 +35,8 @@
                     {{ form.hidden_tag() }}
                     {% for field in form if field.widget.input_type != 'hidden' %}
                     <div class="form-group">
-                        {{ field.label(class_="mt-4") }}
-                        {{ field(class_="form-control mt-2 list-unstyled") }}
+                        {{ field.label(class_="mt-4 text-body-secondary fw-bold") }}
+                        {{ field(class_="form-control mt-2 list-unstyled text-secondary") }}
                         {% for error in field.errors %}
                         <small class="text-danger">{{ error }}</span>
                             {% endfor %}
