@@ -9,3 +9,15 @@
 .bg-tribecca-corner {
 	background-color: #31393c;
 }
+
+.bg-kul-sharif-blue {
+	background-color: #80d4f9 !important;
+}
+
+.bg-hill-lands {
+	background-color: #8bc34a !important;
+}
+
+button:hover {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2) !important;
+}

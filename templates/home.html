@@ -12,7 +12,7 @@
 
 <body class="bg-bold-irish">
     <nav class="navbar bg-bold-irish text-uppercase">
-        <div class="container">
+        <div class="container px-0">
             <a class="navbar-brand text-white" href="#">QRCode Generator</a>
             <ul class="navbar-nav flex-row">
                 <li class="nav-item me-3">
@@ -28,25 +28,44 @@
         </div>
     </nav>
 
-    <div id="home" class="container">
-        <section class="mt-4">
-            <form action="/generate-qr-code" method="post">
-                {{ form.hidden_tag() }}
+    <div id="home" class="container bg-walls-of-santorini rounded-4 my-5 shadow">
+        <div class="row">
+            <div class="col-sm-12 col-md-7 p-4">
+                <form action="/generate-qr-code" method="post">
+                    {{ form.hidden_tag() }}
+                    {% for field in form if field.widget.input_type != 'hidden' %}
+                    <div class="form-group">
+                        {{ field.label(class_="mt-4") }}
+                        {{ field(class_="form-control mt-2 list-unstyled") }}
+                        {% for error in field.errors %}
+                        <small class="text-danger">{{ error }}</span>
+                            {% endfor %}
+                    </div>
+                    {% endfor %}
+                </form>
+            </div>
 
-                {% for field in form if field.widget.input_type != 'hidden' %}
-                <div class="form-group">
-                    {{ field.label(class_="mt-4") }}
-                    {{ field(class_="form-control") }}
+            <div class="col-sm-12 col-md-5 bg-white rounded-end-4">
+                <div class="row">
+                    <div class="col-sm-12 p-4">
+                        <img style="min-width: 100px;" class="img-fluid" src="/static/images/default-image.png"
+                            alt="Default QR Code">
+                    </div>
+                    <div class="col-sm-12 pb-4">
+                        <div class="d-flex justify-content-around">
+                            <button class="btn btn-primary bg-hill-lands rounded-0 border-0 py-2 create-qr-btn"
+                                type="button">Create
+                                QR
+                                Code</button>
 
-                    {% for error in field.errors %}
-                    <small class="text-danger">{{ error }}</span>
-                        {% endfor %}
+                            <button class="btn btn-primary bg-kul-sharif-blue rounded-0 border-0 py-2 download-qr-btn"
+                                type="button">Download
+                                QR Code</button>
+                        </div>
+                    </div>
                 </div>
-                {% endfor %}
-
-                <button class="btn btn-primary" type="submit">Generate my QRCode</button>
-            </form>
-        </section>
+            </div>
+        </div>
     </div>
 
     <div id="about" class="container-fluid py-4 bg-walls-of-santorini">
