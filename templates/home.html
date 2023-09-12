@@ -28,7 +28,7 @@
     <div id="home" class="container bg-walls-of-santorini rounded my-5 shadow">
         <div class="row">
             <div class="col-sm-12 col-md-7 p-4">
-                <form action="/generate-qr-code" method="post">
+                <form class="qr-code-form">
                     {{ form.hidden_tag() }}
                     {% for field in form if field.widget.input_type != 'hidden' %}
                     <div class="form-group">
@@ -45,8 +45,8 @@
             <div class="col-sm-12 col-md-5 bg-white rounded-end">
                 <div class="row">
                     <div class="col-sm-12 p-4">
-                        <img style="min-width: 100px;" class="img-fluid" src="/static/images/default-image.png"
-                            alt="Default QR Code">
+                        <img style="min-width: 100px;" class="img-fluid qrcode-img"
+                            src="/static/images/default-image.png" alt="QR Code">
                     </div>
                     <div class="col-sm-12 pb-4">
                         <div class="d-flex justify-content-around">
@@ -195,6 +195,8 @@
         </div>
     </footer>
 
+    <script src="https://unpkg.com/axios/dist/axios.js"></script>
+    <script src="/static/scripts/app.js"></script>
 </body>
 
 </html>

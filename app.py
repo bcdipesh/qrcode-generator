@@ -1,8 +1,10 @@
 import os
 from pprint import pprint
 
+import requests
 from dotenv import load_dotenv
-from flask import Flask, render_template
+from flask import Flask, jsonify, render_template, request
+from flask_cors import CORS
 
 from forms import QRCodeForm
 from models import QR_Code, QR_Code_Usage_Statistics, User, connect_db, db
@@ -11,6 +13,7 @@ from models import QR_Code, QR_Code_Usage_Statistics, User, connect_db, db
 load_dotenv()
 
 app = Flask(__name__)
+cors = CORS(app)
 
 app.config[
     "SQLALCHEMY_DATABASE_URI"
@@ -33,3 +36,6 @@ def home_page():
     form = QRCodeForm()
 
     return render_template("home.html", form=form)
+
+
+
