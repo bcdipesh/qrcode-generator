@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import IntegerField, RadioField, SelectField, StringField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, Length
 
 
 class QRCodeForm(FlaskForm):
@@ -16,3 +16,10 @@ class QRCodeForm(FlaskForm):
     margin = IntegerField("Margin", default=1)
     qzone = IntegerField("Margin Thickness", default=0)
     file_format = RadioField("File Format", choices=[("png", "png"), ("gif", "gif"), ("jpeg", "jpeg"), ("jpg", "jpg"), ("svg", "svg"), ("eps", "eps")], default="png")
+
+
+class LoginForm(FlaskForm):
+    """Login form."""
+
+    username = StringField("Username", validators=[DataRequired()])
+    password = StringField("Password", validators=[Length(min=6)])

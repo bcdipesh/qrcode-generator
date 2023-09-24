@@ -1,12 +1,10 @@
 import os
-from pprint import pprint
 
-import requests
 from dotenv import load_dotenv
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, render_template, request
 from flask_cors import CORS
 
-from forms import QRCodeForm
+from forms import QRCodeForm, LoginForm
 from models import QR_Code, QR_Code_Usage_Statistics, User, connect_db, db
 
 # Load environment variables
@@ -38,4 +36,10 @@ def home_page():
     return render_template("home.html", form=form)
 
 
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    """Handle user login."""
 
+    form = LoginForm()
+
+    return render_template("login.html", form=form)

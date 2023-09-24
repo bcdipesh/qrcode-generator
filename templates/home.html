@@ -1,202 +1,152 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QRCode Generator</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="/static/stylesheets/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/stylesheets/style.css">
-</head>
-
-<body class="bg-bold-irish">
-    <nav class="navbar bg-bold-irish text-uppercase">
-        <div class="container px-0">
-            <a class="navbar-brand text-white" href="#">QRCode Generator</a>
-            <ul class="navbar-nav flex-row fw-bold">
-                <li class="nav-item me-3">
-                    <a href="#home" class="nav-link active text-white">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#about" class="nav-link text-white">About</a>
-                </li>
-            </ul>
+{% block content %}
+<div id="home" class="container bg-walls-of-santorini rounded my-5 shadow">
+    <div class="row">
+        <div class="col-sm-12 col-md-7 p-4">
+            <form class="qr-code-form">
+                {{ form.hidden_tag() }}
+                {% for field in form if field.widget.input_type != 'hidden' %}
+                <div class="form-group">
+                    {{ field.label(class_="mt-4 text-body-secondary fw-bold") }}
+                    {{ field(class_="form-control mt-2 list-unstyled text-secondary") }}
+                    {% for error in field.errors %}
+                    <small class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                </div>
+                {% endfor %}
+            </form>
         </div>
-    </nav>
 
-    <div id="home" class="container bg-walls-of-santorini rounded my-5 shadow">
-        <div class="row">
-            <div class="col-sm-12 col-md-7 p-4">
-                <form class="qr-code-form">
-                    {{ form.hidden_tag() }}
-                    {% for field in form if field.widget.input_type != 'hidden' %}
-                    <div class="form-group">
-                        {{ field.label(class_="mt-4 text-body-secondary fw-bold") }}
-                        {{ field(class_="form-control mt-2 list-unstyled text-secondary") }}
-                        {% for error in field.errors %}
-                        <small class="text-danger">{{ error }}</span>
-                            {% endfor %}
-                    </div>
-                    {% endfor %}
-                </form>
-            </div>
-
-            <div class="col-sm-12 col-md-5 bg-white rounded-end">
-                <div class="row">
-                    <div class="col-sm-12 p-4">
-                        <img style="min-width: 100px;" class="img-fluid qrcode-img"
-                            src="/static/images/default-image.png" alt="QR Code">
-                    </div>
-                    <div class="col-sm-12 pb-4">
-                        <div class="d-flex justify-content-around">
-                            <button class="btn btn-primary bg-hill-lands rounded-0 border-0 py-2 create-qr-btn"
-                                type="button">Create
-                                QR
-                                Code</button>
-
-                            <button class="btn btn-primary bg-kul-sharif-blue rounded-0 border-0 py-2 download-qr-btn"
-                                type="button">Download
-                                QR Code</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="about" class="container-fluid py-4 bg-walls-of-santorini">
-        <div class="container">
-
-            <div class="row text-center">
-                <div class="col-12">
-                    <h4 class="text-uppercase fw-bold" style="color: #888888;">About</h4>
-                </div>
-                <div class="col-12">
-                    <h5 class="fs-3">
-                        The <strong>Free QR Code Generator</strong>
-                        for High Quality QR Codes
-                    </h5>
-                </div>
-                <div class="col-12">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora enim
-                        quos
-                        voluptas labore, cum
-                        voluptates
-                        fuga
-                        cupiditate eos sequi ipsa iste error, neque tempore vel provident quia, temporibus quo impedit?
-                    </p>
-                </div>
-            </div>
-
-            <div class="row my-4">
-                <div class="col-12 col-md-4 col-lg-2">
-                    <img style="min-width: 100px;" class="shadow-sm m-2 img-fluid"
-                        src="/static/images/facebook-sample.svg" alt="Facebook QRCode Sample">
-                </div>
-                <div class="col-12 col-md-4 col-lg-2">
-                    <img style="min-width: 100px;" class="shadow-sm m-2 img-fluid"
-                        src="/static/images/youtube-sample.svg" alt="YouTube QRCode Sample">
-                </div>
-                <div class="col-12 col-md-4 col-lg-2">
-                    <img style="min-width: 100px;" class="shadow-sm m-2 img-fluid" src="/static/images/ninja-sample.svg"
-                        alt="Ninja QRCode Sample">
-                </div>
-                <div class="col-12 col-md-4 col-lg-2">
-                    <img style="min-width: 100px;" class="shadow-sm m-2 img-fluid"
-                        src="/static/images/twitter-sample.svg" alt="Twitter QRCode Sample">
-                </div>
-                <div class="col-12 col-md-4 col-lg-2">
-                    <img style="min-width: 100px;" class="shadow-sm m-2 img-fluid" src="/static/images/rain-sample.svg"
-                        alt="Rain QRCode Sample">
-                </div>
-                <div class="col-12 col-md-4 col-lg-2">
-                    <img style="min-width: 100px;" class="shadow-sm m-2 img-fluid"
-                        src="/static/images/jungle-sample.svg" alt="Jungle QRCode Sample">
-                </div>
-            </div>
-
-
-            <div class="row my-4">
-                <div class="col-12 col-md-6">
-                    <h4>Endless lifetime with unlimited scans</h4>
-                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Similique doloremque sint ea quis vel
-                        maxime
-                        officiis aut. Deleniti voluptates excepturi ullam est, deserunt quas ut sit repellendus
-                        obcaecati?
-                        Aliquid,
-                        recusandae!</p>
-                </div>
-                <div class="col-12 col-md-6">
-                    <h4>QR Codes with Logo</h4>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta necessitatibus assumenda fugiat
-                        tempora,
-                        voluptates, eveniet, corrupti eum distinctio unde reprehenderit repellat? Dolorem ea voluptate
-                        accusamus
-                        tempora ad sequi suscipit explicabo.</p>
-                </div>
-                <div class="col-12 col-md-6">
-                    <h4>Custom Design and Colors</h4>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum quidem voluptates perferendis sed
-                        nobis
-                        ea
-                        commodi quas nisi, qui velit, dicta aliquam omnis. Ipsa dolorum incidunt consequuntur
-                        dignissimos
-                        inventore
-                        unde.
-                    </p>
-                </div>
-                <div class="col-12 col-md-6">
-                    <h4>High resolution QR Codes for Print</h4>
-                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ratione nisi mollitia, laboriosam magni
-                        delectus
-                        dignissimos deleniti incidunt? Quisquam eaque, non suscipit reiciendis molestiae, praesentium
-                        error
-                        maxime
-                        voluptatem rerum iusto fugit.</p>
-                </div>
-                <div class="col-12 col-md-6">
-                    <h4>QR Codes Vector Formats</h4>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Officia magnam unde, reprehenderit
-                        debitis
-                        minus
-                        dolorem nostrum, possimus, vitae perspiciatis ad deserunt obcaecati maiores iste officiis ex
-                        excepturi
-                        architecto sapiente eos!</p>
-                </div>
-                <div class="col-12 col-md-6">
-                    <h4>Free for commercial usage</h4>
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ea voluptate accusantium nisi animi,
-                        voluptatem
-                        fuga voluptatum in tempore veniam obcaecati.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <footer class="bg-tribecca-corner text-white text-center mb-4 py-4">
-        <div class="container">
+        <div class="col-sm-12 col-md-5 bg-white rounded-end">
             <div class="row">
-                <div class="col-12">
-                    <h2>QRCode Generator</h2>
+                <div class="col-sm-12 p-4">
+                    <img style="min-width: 100px;" class="img-fluid qrcode-img" src="/static/images/default-image.png"
+                        alt="QR Code">
                 </div>
+                <div class="col-sm-12 pb-4">
+                    <div class="d-flex justify-content-around">
+                        <button class="btn btn-primary bg-hill-lands rounded-0 border-0 py-2 create-qr-btn"
+                            type="button">Create
+                            QR
+                            Code</button>
 
-
-                <div class="col-12">
-                    <i style="color: #314A7E;" class="fa-brands m-4 fa-facebook fa-2xl"></i>
-                    <i style="color: #55ACEE;" class="fa-brands m-4 fa-twitter fa-2xl"></i>
-                </div>
-
-                <div class="col-12">
-                    <span>&copy; Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet,
-                        nesciunt.</span>
+                        <button class="btn btn-primary bg-kul-sharif-blue rounded-0 border-0 py-2 download-qr-btn"
+                            type="button">Download
+                            QR Code</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </footer>
+    </div>
+</div>
 
-    <script src="https://unpkg.com/axios/dist/axios.js"></script>
-    <script src="/static/scripts/app.js"></script>
-</body>
+<div id="about" class="container-fluid py-4 bg-walls-of-santorini">
+    <div class="container">
 
-</html>
+        <div class="row text-center">
+            <div class="col-12">
+                <h4 class="text-uppercase fw-bold" style="color: #888888;">About</h4>
+            </div>
+            <div class="col-12">
+                <h5 class="fs-3">
+                    The <strong>Free QR Code Generator</strong>
+                    for High Quality QR Codes
+                </h5>
+            </div>
+            <div class="col-12">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora enim
+                    quos
+                    voluptas labore, cum
+                    voluptates
+                    fuga
+                    cupiditate eos sequi ipsa iste error, neque tempore vel provident quia, temporibus quo impedit?
+                </p>
+            </div>
+        </div>
+
+        <div class="row my-4">
+            <div class="col-12 col-md-4 col-lg-2">
+                <img style="min-width: 100px;" class="shadow-sm m-2 img-fluid" src="/static/images/facebook-sample.svg"
+                    alt="Facebook QRCode Sample">
+            </div>
+            <div class="col-12 col-md-4 col-lg-2">
+                <img style="min-width: 100px;" class="shadow-sm m-2 img-fluid" src="/static/images/youtube-sample.svg"
+                    alt="YouTube QRCode Sample">
+            </div>
+            <div class="col-12 col-md-4 col-lg-2">
+                <img style="min-width: 100px;" class="shadow-sm m-2 img-fluid" src="/static/images/ninja-sample.svg"
+                    alt="Ninja QRCode Sample">
+            </div>
+            <div class="col-12 col-md-4 col-lg-2">
+                <img style="min-width: 100px;" class="shadow-sm m-2 img-fluid" src="/static/images/twitter-sample.svg"
+                    alt="Twitter QRCode Sample">
+            </div>
+            <div class="col-12 col-md-4 col-lg-2">
+                <img style="min-width: 100px;" class="shadow-sm m-2 img-fluid" src="/static/images/rain-sample.svg"
+                    alt="Rain QRCode Sample">
+            </div>
+            <div class="col-12 col-md-4 col-lg-2">
+                <img style="min-width: 100px;" class="shadow-sm m-2 img-fluid" src="/static/images/jungle-sample.svg"
+                    alt="Jungle QRCode Sample">
+            </div>
+        </div>
+
+
+        <div class="row my-4">
+            <div class="col-12 col-md-6">
+                <h4>Endless lifetime with unlimited scans</h4>
+                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Similique doloremque sint ea quis vel
+                    maxime
+                    officiis aut. Deleniti voluptates excepturi ullam est, deserunt quas ut sit repellendus
+                    obcaecati?
+                    Aliquid,
+                    recusandae!</p>
+            </div>
+            <div class="col-12 col-md-6">
+                <h4>QR Codes with Logo</h4>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta necessitatibus assumenda fugiat
+                    tempora,
+                    voluptates, eveniet, corrupti eum distinctio unde reprehenderit repellat? Dolorem ea voluptate
+                    accusamus
+                    tempora ad sequi suscipit explicabo.</p>
+            </div>
+            <div class="col-12 col-md-6">
+                <h4>Custom Design and Colors</h4>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum quidem voluptates perferendis sed
+                    nobis
+                    ea
+                    commodi quas nisi, qui velit, dicta aliquam omnis. Ipsa dolorum incidunt consequuntur
+                    dignissimos
+                    inventore
+                    unde.
+                </p>
+            </div>
+            <div class="col-12 col-md-6">
+                <h4>High resolution QR Codes for Print</h4>
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ratione nisi mollitia, laboriosam magni
+                    delectus
+                    dignissimos deleniti incidunt? Quisquam eaque, non suscipit reiciendis molestiae, praesentium
+                    error
+                    maxime
+                    voluptatem rerum iusto fugit.</p>
+            </div>
+            <div class="col-12 col-md-6">
+                <h4>QR Codes Vector Formats</h4>
+                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Officia magnam unde, reprehenderit
+                    debitis
+                    minus
+                    dolorem nostrum, possimus, vitae perspiciatis ad deserunt obcaecati maiores iste officiis ex
+                    excepturi
+                    architecto sapiente eos!</p>
+            </div>
+            <div class="col-12 col-md-6">
+                <h4>Free for commercial usage</h4>
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ea voluptate accusantium nisi animi,
+                    voluptatem
+                    fuga voluptatum in tempore veniam obcaecati.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
