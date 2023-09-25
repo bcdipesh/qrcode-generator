@@ -1,10 +1,11 @@
 import os
 
 from dotenv import load_dotenv
-from flask import Flask, render_template, request
+from flask import Flask, flash, redirect, render_template
 from flask_cors import CORS
+from sqlalchemy.exc import IntegrityError
 
-from forms import QRCodeForm, LoginForm
+from forms import LoginForm, QRCodeForm, SignUpForm
 from models import QR_Code, QR_Code_Usage_Statistics, User, connect_db, db
 
 # Load environment variables
@@ -30,7 +31,7 @@ connect_db(app)
 
 @app.route("/")
 def home_page():
-    """Display home page"""
+    """Display home page."""
     form = QRCodeForm()
 
     return render_template("home.html", form=form)
@@ -43,3 +44,28 @@ def login():
     form = LoginForm()
 
     return render_template("login.html", form=form)
+
+
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
+    """Handle user signup."""
+
+    form = SignUpForm()
+
+    if form.validate_on_submit():
+        try:
+            user = User.signup(username=form.username.data,
+                               password=form.password.data,
+                               email=form.email.data)
+            db.session.commit()
+        
+        except IntegrityError:
+            flash("Username already taken", "danger")
+            return render_template("signup.html", form=form)
+        
+        return redirect("/")
+
+    else:
+        return render_template("signup.html", form=form)
+
+    

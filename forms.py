@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import IntegerField, RadioField, SelectField, StringField
-from wtforms.validators import DataRequired, Length
+from wtforms import (IntegerField, PasswordField, RadioField, SelectField,
+                     StringField)
+from wtforms.validators import DataRequired, Email, Length
 
 
 class QRCodeForm(FlaskForm):
@@ -23,3 +24,11 @@ class LoginForm(FlaskForm):
 
     username = StringField("Username", validators=[DataRequired()])
     password = StringField("Password", validators=[Length(min=6)])
+
+
+class SignUpForm(FlaskForm):
+    """Form for adding users."""
+
+    username = StringField("Username", validators=[DataRequired()])
+    email = StringField("E-mail", validators=[DataRequired(), Email()])
+    password = PasswordField("Password", validators=[Length(min=6)])

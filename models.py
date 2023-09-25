@@ -22,6 +22,24 @@ class User(db.Model):
 
     password = db.Column(db.Text, nullable=False)
 
+    @classmethod
+    def signup(cls, username, email, password):
+        """Sign up user.
+        
+        Hashes password and adds user to system.
+        """
+
+        hashed_pwd = bcrypt.generate_password_hash(password).decode("UTF-8")
+
+        user = User(
+            username=username,
+            email=email,
+            password=hashed_pwd
+        )
+
+        db.session.add(user)
+        return user
+
 
 class QR_Code(db.Model):
     """Represents the qr codes created by the users"""
