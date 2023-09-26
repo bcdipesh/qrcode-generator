@@ -40,6 +40,12 @@ def do_login(user):
 
     session[CURR_USER_KEY] = user.user_id
 
+def do_logout():
+    """Logout user."""
+
+    if CURR_USER_KEY in session:
+        del session[CURR_USER_KEY]
+
 # Routes
 
 @app.route("/")
@@ -91,4 +97,16 @@ def signup():
     else:
         return render_template("signup.html", form=form)
 
+
+@app.route("/logout")
+def logout():
+    """Handle user logout."""
+
+    if g.user:
+        do_logout()
+        flash("You have been logged out successfully.", "success")
+    else:
+        flash("You are not logged in.", "danger")
+    
+    return redirect("/")
     
