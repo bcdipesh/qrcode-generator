@@ -23,7 +23,7 @@ class LoginForm(FlaskForm):
     """Login form."""
 
     username = StringField("Username", validators=[DataRequired()])
-    password = StringField("Password", validators=[Length(min=6)])
+    password = PasswordField("Password", validators=[Length(min=6)])
 
 
 class SignUpForm(FlaskForm):
