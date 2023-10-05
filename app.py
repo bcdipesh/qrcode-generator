@@ -110,3 +110,14 @@ def logout():
     
     return redirect("/")
     
+
+@app.route("/profile")
+def profile():
+    """View user profile."""
+
+    if g.user:
+        return render_template("profile.html")
+    else:
+        flash("You are not logged in.", "danger")
+    
+    return redirect("/")

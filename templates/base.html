@@ -1,80 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>QRCode Generator</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="/static/stylesheets/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/stylesheets/style.css">
-</head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/static/stylesheets/bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/stylesheets/style.css" />
+  </head>
 
-<body class="bg-bold-irish">
-
+  <body class="bg-bold-irish">
     <nav class="navbar navbar-expand-lg bg-bold-irish">
-        <div class="container">
-            <a class="navbar-brand text-white" href="/#home">QRCode Generator</a>
-            <button class="navbar-toggler shadow-none" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="/#home">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="/#about">About</a>
-                    </li>
-                    {% if not g.user %}
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="/login">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="/signup">Signup</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="/logout">Log out</a>
-                    </li>
-                    {% endif %}
-                </ul>
-            </div>
+      <div class="container">
+        <a class="navbar-brand text-white" href="/#home">QRCode Generator</a>
+        <button
+          class="navbar-toggler shadow-none"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link text-white" href="/#home">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="/#about">About</a>
+            </li>
+            {% if not g.user %}
+            <li class="nav-item">
+              <a class="nav-link text-white" href="/login">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="/signup">Signup</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link text-white" href="/profile">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="/logout">Log out</a>
+            </li>
+            {% endif %}
+          </ul>
         </div>
+      </div>
     </nav>
 
     <div class="container px-0">
-        {% for category, message in get_flashed_messages(with_categories=True) %}
-        <div class="alert alert-{{ category }}">{{ message }}</div>
-        {% endfor %}
+      {% for category, message in get_flashed_messages(with_categories=True) %}
+      <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %}
     </div>
     {% block content %}{% endblock %}
     <footer class="bg-tribecca-corner text-white text-center mb-4 py-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <h2>QRCode Generator</h2>
-                </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <h2>QRCode Generator</h2>
+          </div>
 
+          <div class="col-12">
+            <i
+              style="color: #314a7e"
+              class="fa-brands m-4 fa-facebook fa-2xl"
+            ></i>
+            <i
+              style="color: #55acee"
+              class="fa-brands m-4 fa-twitter fa-2xl"
+            ></i>
+          </div>
 
-                <div class="col-12">
-                    <i style="color: #314A7E;" class="fa-brands m-4 fa-facebook fa-2xl"></i>
-                    <i style="color: #55ACEE;" class="fa-brands m-4 fa-twitter fa-2xl"></i>
-                </div>
-
-                <div class="col-12">
-                    <span>&copy; Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet,
-                        nesciunt.</span>
-                </div>
-            </div>
+          <div class="col-12">
+            <span
+              >&copy; Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Amet, nesciunt.</span
+            >
+          </div>
         </div>
+      </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.js"></script>
     <script src="/static/scripts/app.js"></script>
-</body>
-
+  </body>
 </html>
