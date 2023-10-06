@@ -32,3 +32,10 @@ class SignUpForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
     email = StringField("E-mail", validators=[DataRequired(), Email()])
     password = PasswordField("Password", validators=[Length(min=6)])
+
+class UserEditForm(FlaskForm):
+    """Form for editing users."""
+
+    username = StringField("Username", validators=[DataRequired()])
+    email = StringField("E-mail", validators=[DataRequired(), Email()])
+    password = PasswordField("Password", validators=[DataRequired()])

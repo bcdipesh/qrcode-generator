@@ -5,7 +5,7 @@ from flask import Flask, flash, g, redirect, render_template, session
 from flask_cors import CORS
 from sqlalchemy.exc import IntegrityError
 
-from forms import LoginForm, QRCodeForm, SignUpForm
+from forms import LoginForm, QRCodeForm, SignUpForm, UserEditForm
 from models import QR_Code, QR_Code_Usage_Statistics, User, connect_db, db
 
 CURR_USER_KEY = "curr_user"
@@ -33,6 +33,8 @@ def add_user_to_g():
 
     if CURR_USER_KEY in session:
         g.user = User.query.get(session[CURR_USER_KEY])
+    else:
+        g.user = None
 
 
 def do_login(user):
@@ -111,13 +113,27 @@ def logout():
     return redirect("/")
     
 
-@app.route("/profile")
+@app.route("/user/profile", methods=["GET", "POST"])
 def profile():
-    """View user profile."""
+    """Update user profile."""
 
-    if g.user:
-        return render_template("profile.html")
-    else:
-        flash("You are not logged in.", "danger")
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
     
-    return redirect("/")
+    user = g.user
+    form = UserEditForm(obj=user)
+
+    if form.validate_on_submit():
+        if User.authenticate(user.username, form.password.data):
+            user.username = form.username.data
+            user.email = form.email.data
+
+            db.session.commit()
+            flash("Profile updated!", "success")
+            return redirect(f"/user/profile")
+        else:
+            flash("Password incorrect!", "danger")
+            return redirect("/")
+    
+    return render_template("profile.html", form=form)
