@@ -1,62 +1,94 @@
-'use strict';
+"use strict";
 
 // Buttons
-const createQRBtn = document.querySelector('.create-qr-btn');
-const downloadQRBtn = document.querySelector('.download-qr-btn');
+const createQRBtn = document.querySelector(".create-qr-btn");
+const saveQRBtn = document.querySelector(".save-qr-btn");
+const downloadQRBtn = document.querySelector(".download-qr-btn");
 let qrCodeUrl = null;
 let fileFormat = null;
 
 // Form
-const createQRCodeForm = document.querySelector('.qr-code-form');
+const createQRCodeForm = document.querySelector(".qr-code-form");
 
-createQRBtn.addEventListener('click', async function (event) {
-	// Collect form data
-	const content = createQRCodeForm.elements['content'].value;
-	const size = createQRCodeForm.elements['size'].value;
-	const charsetSource = createQRCodeForm.elements['charset_source'].value;
-	const charsetTarget = createQRCodeForm.elements['charset_target'].value;
-	const ecc = createQRCodeForm.elements['ecc'].value;
-	const color = createQRCodeForm.elements['color'].value;
-	const bgColor = createQRCodeForm.elements['bg_color'].value;
-	const margin = createQRCodeForm.elements['margin'].value;
-	const qzone = createQRCodeForm.elements['qzone'].value;
-	fileFormat = createQRCodeForm.elements['file_format'].value;
+const collectFormData = (form) => {
+  // Collect form data
+  const content = form.elements["content"].value;
+  const size = form.elements["size"].value;
+  const charsetSource = form.elements["charset_source"].value;
+  const charsetTarget = form.elements["charset_target"].value;
+  const ecc = form.elements["ecc"].value;
+  const color = form.elements["color"].value;
+  const bgColor = form.elements["bg_color"].value;
+  const margin = form.elements["margin"].value;
+  const qzone = form.elements["qzone"].value;
+  fileFormat = form.elements["file_format"].value;
 
-	const url = new URL('https://api.qrserver.com/v1/create-qr-code');
-	url.searchParams.set('data', content);
-	url.searchParams.set('size', size);
-	url.searchParams.set('charset-source', charsetSource);
-	url.searchParams.set('charset-target', charsetTarget);
-	url.searchParams.set('ecc', ecc);
-	url.searchParams.set('color', color);
-	url.searchParams.set('bgcolor', bgColor);
-	url.searchParams.set('margin', margin);
-	url.searchParams.set('qzone', qzone);
-	url.searchParams.set('format', fileFormat);
+  return {
+    content,
+    size,
+    charsetSource,
+    charsetTarget,
+    ecc,
+    color,
+    bgColor,
+    margin,
+    qzone,
+  };
+};
 
-	qrCodeUrl = url.href;
+const createQRCodeURL = () => {
+  const formData = collectFormData(createQRCodeForm);
 
-	// Update QR Code image
-	document.querySelector('.qrcode-img').src = qrCodeUrl;
-});
+  const url = new URL("https://api.qrserver.com/v1/create-qr-code");
+  url.searchParams.set("data", formData.content);
+  url.searchParams.set("size", formData.size);
+  url.searchParams.set("charset-source", formData.charsetSource);
+  url.searchParams.set("charset-target", formData.charsetTarget);
+  url.searchParams.set("ecc", formData.ecc);
+  url.searchParams.set("color", formData.color);
+  url.searchParams.set("bgcolor", formData.bgColor);
+  url.searchParams.set("margin", formData.margin);
+  url.searchParams.set("qzone", formData.qzone);
+  url.searchParams.set("format", fileFormat);
 
-downloadQRBtn.addEventListener('click', async function (event) {
-	if (!qrCodeUrl) {
-		createQRBtn.click();
-	}
+  return url.href;
+};
 
-	const response = await axios.get(qrCodeUrl, {
-		responseType: 'blob',
-	});
+if (createQRBtn) {
+  createQRBtn.addEventListener("click", function (event) {
+    qrCodeUrl = createQRCodeURL();
+    document.querySelector(".qrcode-img").src = qrCodeUrl;
+  });
+}
 
-	const href = URL.createObjectURL(response.data);
-	console.log(response);
-	const link = document.createElement('a');
-	link.href = href;
-	link.setAttribute('download', `qrcode.${fileFormat}`);
-	document.body.appendChild(link);
-	link.click();
+if (saveQRBtn) {
+  saveQRBtn.addEventListener("click", async function (event) {
+    qrCodeUrl = createQRCodeURL();
 
-	document.body.removeChild(link);
-	URL.revokeObjectURL(href);
-});
+    const response = await axios.post("/user/qrcode", {
+      qrCodeUrl,
+    });
+  });
+}
+
+if (downloadQRBtn) {
+  downloadQRBtn.addEventListener("click", async function (event) {
+    if (!qrCodeUrl) {
+      createQRBtn.click();
+    }
+
+    const response = await axios.get(qrCodeUrl, {
+      responseType: "blob",
+    });
+
+    const href = URL.createObjectURL(response.data);
+    const link = document.createElement("a");
+    link.href = href;
+    link.setAttribute("download", `qrcode.${fileFormat}`);
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    URL.revokeObjectURL(href);
+  });
+}

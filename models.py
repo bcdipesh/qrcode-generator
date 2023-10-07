@@ -63,9 +63,7 @@ class QR_Code(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
 
-    title = db.Column(db.String(20), nullable=False)
-
-    description = db.Column(db.Text, nullable=False)
+    url = db.Column(db.Text, nullable=False)
 
 
 class QR_Code_Usage_Statistics(db.Model):

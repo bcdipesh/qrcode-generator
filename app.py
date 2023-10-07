@@ -1,7 +1,8 @@
 import os
 
 from dotenv import load_dotenv
-from flask import Flask, flash, g, redirect, render_template, session
+from flask import (Flask, flash, g, jsonify, redirect, render_template,
+                   request, session, url_for)
 from flask_cors import CORS
 from sqlalchemy.exc import IntegrityError
 
@@ -14,7 +15,6 @@ CURR_USER_KEY = "curr_user"
 load_dotenv()
 
 app = Flask(__name__)
-cors = CORS(app)
 
 app.config[
     "SQLALCHEMY_DATABASE_URI"
@@ -137,3 +137,23 @@ def profile():
             return redirect("/")
     
     return render_template("profile.html", form=form)
+
+
+@app.route("/user/qrcode", methods=["POST"])
+def save_qr_code():
+    """Save user QR Code."""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+    
+    user = g.user
+    qr_code_url = request.json["qrCodeUrl"]
+
+    qr_code = QR_Code(user_id = user.user_id, url = qr_code_url)
+
+    db.session.add(qr_code)
+    db.session.commit()
+
+    flash("Your QR Code has been saved successfully", "success")
+    return jsonify(message="Your QR Code has been saved successfully")
