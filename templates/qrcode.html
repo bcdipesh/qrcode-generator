@@ -3,7 +3,8 @@
 {% block content %}
 <div id="qrcode" class="container bg-walls-of-santorini rounded p-4 my-5 shadow">
     <h2>Your QRCodes</h2>
-    <div class="list-group mt-4">
+    <p>Total: {{ qr_codes|length }}</p>
+    <div class="list-group list-group-numbered mt-4">
         {% for qr_code in qr_codes %}
         <a href="{{ qr_code.url }}" target="_blank" class="list-group-item list-group-item-action">{{ qr_code.url
             }}</a>
