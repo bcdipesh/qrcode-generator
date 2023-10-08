@@ -65,7 +65,7 @@ if (saveQRBtn) {
   saveQRBtn.addEventListener("click", async function (event) {
     qrCodeUrl = createQRCodeURL();
 
-    const response = await axios.post("/user/qrcode", {
+    await axios.post("/user/qrcode", {
       qrCodeUrl,
     });
   });

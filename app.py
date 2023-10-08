@@ -1,8 +1,7 @@
 import os
 
 from dotenv import load_dotenv
-from flask import (Flask, flash, g, jsonify, redirect, render_template,
-                   request, session, url_for)
+from flask import Flask, flash, g, redirect, render_template, request, session
 from flask_cors import CORS
 from sqlalchemy.exc import IntegrityError
 
@@ -53,8 +52,8 @@ def do_logout():
 @app.route("/")
 def home_page():
     """Display home page."""
-    form = QRCodeForm()
 
+    form = QRCodeForm()
     return render_template("home.html", form=form)
 
 
@@ -155,5 +154,13 @@ def save_qr_code():
     db.session.add(qr_code)
     db.session.commit()
 
-    flash("Your QR Code has been saved successfully", "success")
-    return jsonify(message="Your QR Code has been saved successfully")
+    flash("Your QR Code has been saved successfully.", "success")
+    return redirect("/")
+
+
+@app.route("/user/qrcode", methods=["GET"])
+def list_qr_codes():
+    """Display user qr codes."""
+
+    qr_codes = g.user.qr_codes
+    return render_template("qrcode.html", qr_codes=qr_codes)

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="qrcode" class="bg-walls-of-santorini rounded p-4 my-5 shadow">
+    <h2>Your QRCodes</h2>
+    <div class="list-group mt-4">
+        {% for qr_code in qr_codes %}
+        <a href="{{ qr_code.url }}" target="_blank" class="list-group-item list-group-item-action">{{ qr_code.url
+            }}</a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

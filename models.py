@@ -22,6 +22,8 @@ class User(db.Model):
 
     password = db.Column(db.Text, nullable=False)
 
+    qr_codes = db.relationship('QR_Code', backref='user', lazy=True)
+
     @classmethod
     def signup(cls, username, email, password):
         """Sign up user.
