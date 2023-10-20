@@ -164,5 +164,32 @@ def save_qr_code():
 def list_qr_codes():
     """Display user qr codes."""
 
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
     qr_codes = g.user.qr_codes
     return render_template("qrcode.html", qr_codes=qr_codes)
+
+
+@app.route("/user/qrcode/<int:qr_code_id>/delete", methods=["POST"])
+def delete_qr_code(qr_code_id):
+    """Delete a qr code."""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+    
+    qr_code = QR_Code.query.get_or_404(qr_code_id)
+    if qr_code.user_id != g.user.user_id:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+    
+    db.session.delete(qr_code)
+    db.session.commit()
+
+    flash("Your QR Code has been deleted.", "success")
+
+    return redirect("/user/qrcode")
+    
+

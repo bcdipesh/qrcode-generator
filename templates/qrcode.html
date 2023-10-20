@@ -6,8 +6,18 @@
     <p>Total: {{ qr_codes|length }}</p>
     <div class="list-group list-group-numbered mt-4">
         {% for qr_code in qr_codes %}
-        <a href="{{ qr_code.url }}" target="_blank" class="list-group-item list-group-item-action">{{ qr_code.url
-            }}</a>
+        <div class="row">
+            <div class="col-sm-10">
+                <a href="{{ qr_code.url }}" target="_blank" class="list-group-item list-group-item-action">{{
+                    qr_code.url
+                    }}</a>
+            </div>
+            <div class="col-sm-2">
+                <form action="/user/qrcode/{{qr_code.qr_code_id}}/delete" method="POST">
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
         {% endfor %}
     </div>
 </div>
