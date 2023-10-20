@@ -3,9 +3,11 @@
 // Buttons
 const createQRBtn = document.querySelector(".create-qr-btn");
 const saveQRBtn = document.querySelector(".save-qr-btn");
+const updateQRBtn = document.querySelector(".update-qr-btn");
 const downloadQRBtn = document.querySelector(".download-qr-btn");
 let qrCodeUrl = null;
 let fileFormat = null;
+let qrCodeId = null;
 
 // Form
 const createQRCodeForm = document.querySelector(".qr-code-form");
@@ -21,6 +23,7 @@ const collectFormData = (form) => {
   const bgColor = form.elements["bg_color"].value;
   const margin = form.elements["margin"].value;
   const qzone = form.elements["qzone"].value;
+  qrCodeId = form.elements["qr_code_id"]?.value ?? null;
   fileFormat = form.elements["file_format"].value;
 
   return {
@@ -67,6 +70,17 @@ if (saveQRBtn) {
 
     await axios.post("/user/qrcode", {
       qrCodeUrl,
+    });
+  });
+}
+
+if (updateQRBtn) {
+  updateQRBtn.addEventListener("click", async function (event) {
+    qrCodeUrl = createQRCodeURL();
+
+    await axios.post("/user/qrcode/update", {
+      qrCodeUrl,
+      qrCodeId,
     });
   });
 }

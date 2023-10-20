@@ -193,3 +193,41 @@ def delete_qr_code(qr_code_id):
     return redirect("/user/qrcode")
     
 
+@app.route("/user/qrcode/<int:qr_code_id>/update")
+def update_qr_code_form(qr_code_id):
+    """Update qr code form."""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+    
+    qr_code = QR_Code.query.get_or_404(qr_code_id)
+    if qr_code.user_id != g.user.user_id:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+    
+    form = QRCodeForm()
+
+    return render_template("update.html", form=form, qr_code=qr_code)
+
+@app.route("/user/qrcode/update", methods=["POST"])
+def update_qr_code():
+    """Update user QR Code."""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+    
+    qr_code_url = request.json["qrCodeUrl"]
+
+    qr_code = QR_Code.query.get_or_404(int(request.json["qrCodeId"]))
+    if qr_code.user_id != g.user.user_id:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+    
+    qr_code.url = qr_code_url
+    db.session.commit()
+
+    flash("QR Code updated!", "success")
+
+    return redirect("/user/qrcode")

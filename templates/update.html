@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="update" class="container bg-walls-of-santorini rounded my-5 shadow">
+    <div class="row">
+        <div class="col-sm-12 col-md-7 p-4">
+            <h2>Update QRCode</h2>
+            <form class="qr-code-form">
+                <input id="qr_code_id" name="qr_code_id" value="{{qr_code.qr_code_id}}" type="hidden">
+                {{ form.hidden_tag() }}
+                {% for field in form if field.widget.input_type != 'hidden' %}
+                <div class="form-group">
+                    {{ field.label(class_="mt-4 text-body-secondary fw-bold") }}
+                    {{ field(class_="form-control mt-2 list-unstyled text-secondary") }}
+                    {% for error in field.errors %}
+                    <small class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                </div>
+                {% endfor %}
+            </form>
+        </div>
+
+        <div class="col-sm-12 col-md-5 bg-white rounded-end">
+            <div class="row">
+                <div class="col-sm-12 py-4">
+                    <img style="min-width: 100px;" class="img-fluid qrcode-img rounded" src="{{qr_code.url}}"
+                        alt="QR Code">
+                </div>
+                <div class="col-sm-12 pb-4">
+                    <div class="d-flex justify-content-around">
+                        <button class="btn btn-primary rounded-0 border-0 py-2 create-qr-btn" type="button">Create
+                            QR
+                            Code</button>
+                        <button class="btn btn-primary bg-hill-lands rounded-0 border-0 py-2 update-qr-btn"
+                            type="button">Update
+                            QR
+                            Code</button>
+                        <a class="btn btn-secondary rounded-0 border-0 py-2" href="/user/qrcode" role="button">Cancel
+                            Update</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
