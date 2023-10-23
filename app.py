@@ -229,5 +229,5 @@ def update_qr_code():
     db.session.commit()
 
     flash("QR Code updated!", "success")
-
+    
     return redirect("/user/qrcode")
