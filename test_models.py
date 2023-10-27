@@ -1,5 +1,5 @@
 import os
-import unittest
+from unittest import TestCase
 
 from app import app
 from models import QR_Code, QR_Code_Usage_Statistics, User, db
@@ -11,7 +11,7 @@ app.config[
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['TESTING'] = True
 
-class UserModelTestCase(unittest.TestCase):
+class UserModelTestCase(TestCase):
     def setUp(self):
         """Set up a testing database before each test."""
         with app.app_context():
@@ -45,7 +45,7 @@ class UserModelTestCase(unittest.TestCase):
             authenticated_user = User.authenticate("testuser", "wrongpassword")
             self.assertFalse(authenticated_user)
 
-class QRCodeModelTestCase(unittest.TestCase):
+class QRCodeModelTestCase(TestCase):
     def setUp(self):
         """Set up a testing database before each test."""
         self.client = app.test_client()
@@ -67,7 +67,7 @@ class QRCodeModelTestCase(unittest.TestCase):
             self.assertIsInstance(qr_code, QR_Code)
             self.assertEqual(qr_code.url, "https://example.com")
 
-class QRCodeUsageStatisticsModelTestCase(unittest.TestCase):
+class QRCodeUsageStatisticsModelTestCase(TestCase):
     def setUp(self):
         """Set up a testing database before each test."""
         self.client = app.test_client()
@@ -91,6 +91,3 @@ class QRCodeUsageStatisticsModelTestCase(unittest.TestCase):
             db.session.commit()
             self.assertIsInstance(statistics, QR_Code_Usage_Statistics)
             self.assertEqual(statistics.scanned_by, "tester")
-
-if __name__ == '__main__':
-    unittest.main()

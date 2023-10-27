@@ -23,8 +23,8 @@ app.config["SECRET_KEY"] = "QRCode Generator"
 
 connect_db(app)
 
-# with app.app_context():
-#     db.create_all()
+with app.app_context():
+    db.create_all()
 
 @app.before_request
 def add_user_to_g():
