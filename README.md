@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-The QRCode Generator Application is a Python Flask web application designed to provide users with a user-friendly and efficient tool for creating custom QR codes. Users can input various types of content, such as URLs, contact information, or product details, and instantly generate personalized QR codes that they can use for their specific purposes. The application offers customization options, allowing users to modify the appearance of the QR codes, including color, size, and error correction levels. This README.md file will guide you through the project setup and usage.
+The QRCode Generator Application is a Python Flask web application built with [QR Code Generator API](https://goqr.me/api/doc/create-qr-code/) designed to provide users with a user-friendly and efficient tool for creating custom QR codes. Users can input various types of content, such as URLs, contact information, or product details, and instantly generate personalized QR codes that they can use for their specific purposes. The application offers customization options, allowing users to modify the appearance of the QR codes, including color, size, and error correction levels. This README.md file will guide you through the project setup and usage.
 
 ## Table of Contents
 
