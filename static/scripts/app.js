@@ -61,6 +61,7 @@ if (createQRBtn) {
   createQRBtn.addEventListener("click", function (event) {
     qrCodeUrl = createQRCodeURL();
     document.querySelector(".qrcode-img").src = qrCodeUrl;
+    document.querySelector(".container.px-0").innerHTML = "";
   });
 }
 
@@ -71,6 +72,11 @@ if (saveQRBtn) {
     await axios.post("/user/qrcode", {
       qrCodeUrl,
     });
+
+    const alertDiv = document.createElement("div");
+    alertDiv.setAttribute("class", "alert alert-success");
+    alertDiv.append("Your QR Code has been saved successfully.");
+    document.querySelector(".container.px-0").appendChild(alertDiv);
   });
 }
 
@@ -82,6 +88,11 @@ if (updateQRBtn) {
       qrCodeUrl,
       qrCodeId,
     });
+
+    const alertDiv = document.createElement("div");
+    alertDiv.setAttribute("class", "alert alert-success");
+    alertDiv.append("QR Code updated!");
+    document.querySelector(".container.px-0").appendChild(alertDiv);
   });
 }
 

@@ -2,11 +2,10 @@ import os
 
 from dotenv import load_dotenv
 from flask import Flask, flash, g, redirect, render_template, request, session
-from flask_cors import CORS
 from sqlalchemy.exc import IntegrityError
 
 from forms import LoginForm, QRCodeForm, SignUpForm, UserEditForm
-from models import QR_Code, QR_Code_Usage_Statistics, User, connect_db, db
+from models import QR_Code, User, connect_db, db
 
 CURR_USER_KEY = "curr_user"
 
@@ -18,13 +17,14 @@ app = Flask(__name__)
 app.config[
     "SQLALCHEMY_DATABASE_URI"
 ] = f"postgresql://postgres:{os.environ.get('DB_PASSWORD')}@localhost/qrcode_generator"
-app.config["SQLALCHEMY_ECHO"] = True
+# app.config["SQLALCHEMY_ECHO"] = True
 app.config["SECRET_KEY"] = "QRCode Generator"
 
 connect_db(app)
 
 # with app.app_context():
 #     db.create_all()
+
 
 @app.before_request
 def add_user_to_g():
@@ -41,13 +41,16 @@ def do_login(user):
 
     session[CURR_USER_KEY] = user.user_id
 
+
 def do_logout():
     """Logout user."""
 
     if CURR_USER_KEY in session:
         del session[CURR_USER_KEY]
 
+
 # Routes
+
 
 @app.route("/")
 def home_page():
@@ -84,17 +87,19 @@ def signup():
 
     if form.validate_on_submit():
         try:
-            user = User.signup(username=form.username.data,
-                               password=form.password.data,
-                               email=form.email.data)
+            user = User.signup(
+                username=form.username.data,
+                password=form.password.data,
+                email=form.email.data,
+            )
             db.session.commit()
             do_login(user)
             flash(f"Hello, {user.username}!", "success")
-        
+
         except IntegrityError:
             flash("Username/E-mail already taken", "danger")
             return render_template("signup.html", form=form)
-        
+
         return redirect("/")
 
     else:
@@ -110,9 +115,9 @@ def logout():
         flash("You have been logged out successfully.", "success")
     else:
         flash("You are not logged in.", "danger")
-    
+
     return redirect("/")
-    
+
 
 @app.route("/user/profile", methods=["GET", "POST"])
 def profile():
@@ -121,7 +126,7 @@ def profile():
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
-    
+
     user = g.user
     form = UserEditForm(obj=user)
 
@@ -132,11 +137,11 @@ def profile():
 
             db.session.commit()
             flash("Profile updated!", "success")
-            return redirect(f"/user/profile")
+            return redirect("/user/profile")
         else:
             flash("Password incorrect!", "danger")
             return redirect("/")
-    
+
     return render_template("profile.html", form=form)
 
 
@@ -147,11 +152,11 @@ def save_qr_code():
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
-    
+
     user = g.user
     qr_code_url = request.json["qrCodeUrl"]
 
-    qr_code = QR_Code(user_id = user.user_id, url = qr_code_url)
+    qr_code = QR_Code(user_id=user.user_id, url=qr_code_url)
 
     db.session.add(qr_code)
     db.session.commit()
@@ -179,19 +184,19 @@ def delete_qr_code(qr_code_id):
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
-    
+
     qr_code = QR_Code.query.get_or_404(qr_code_id)
     if qr_code.user_id != g.user.user_id:
         flash("Access unauthorized.", "danger")
         return redirect("/")
-    
+
     db.session.delete(qr_code)
     db.session.commit()
 
     flash("Your QR Code has been deleted.", "success")
 
     return redirect("/user/qrcode")
-    
+
 
 @app.route("/user/qrcode/<int:qr_code_id>/update")
 def update_qr_code_form(qr_code_id):
@@ -200,15 +205,16 @@ def update_qr_code_form(qr_code_id):
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
-    
+
     qr_code = QR_Code.query.get_or_404(qr_code_id)
     if qr_code.user_id != g.user.user_id:
         flash("Access unauthorized.", "danger")
         return redirect("/")
-    
+
     form = QRCodeForm()
 
     return render_template("update.html", form=form, qr_code=qr_code)
+
 
 @app.route("/user/qrcode/update", methods=["POST"])
 def update_qr_code():
@@ -217,35 +223,16 @@ def update_qr_code():
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
-    
+
     qr_code_url = request.json["qrCodeUrl"]
 
     qr_code = QR_Code.query.get_or_404(int(request.json["qrCodeId"]))
     if qr_code.user_id != g.user.user_id:
         flash("Access unauthorized.", "danger")
         return redirect("/")
-    
+
     qr_code.url = qr_code_url
     db.session.commit()
 
     flash("QR Code updated!", "success")
-    
-    return redirect("/user/qrcode")
-
-##############################################################################
-# Turn off all caching in Flask
-#   (useful for dev; in production, this kind of stuff is typically
-#   handled elsewhere)
-#
-# https://stackoverflow.com/questions/34066804/disabling-caching-in-flask
-
-
-@app.after_request
-def add_header(req):
-    """Add non-caching headers on every request."""
-
-    req.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-    req.headers["Pragma"] = "no-cache"
-    req.headers["Expires"] = "0"
-    req.headers["Cache-Control"] = "public, max-age=0"
-    return req
+    return redirect(f"/user/qrcode/{qr_code.qr_code_id}/update")
