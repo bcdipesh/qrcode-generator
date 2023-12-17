@@ -14,13 +14,13 @@ load_dotenv()
 
 app = Flask(__name__)
 
-# Get DB_URI from environ variable (useful for production/testing) or,
-# if not set there, use development local db.
+# Get DB_URI, SECRET_KEY from environ variable (useful for production/testing) or,
+# if not set there.
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
     "DATABASE_URL",
-    "postgres://wrutgxxc:7hDjBGhupBjCKDXW9jsfyJSNLuqmFZ_V@berry.db.elephantsql.com/wrutgxxc",
+    f"postgresql://postgres:{os.environ.get('DB_PASSWORD')}@localhost/qrcode_generator",
 )
-app.config["SECRET_KEY"] = "QRCode Generator"
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "QRCode Generator")
 
 connect_db(app)
 
