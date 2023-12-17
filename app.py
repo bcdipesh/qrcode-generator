@@ -20,7 +20,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
     "DATABASE_URL",
     f"postgresql://postgres:{os.environ.get('DB_PASSWORD')}@localhost/qrcode_generator",
 )
-app.config["SECRET_KEY"] = "QRCode Generator"
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "QRCode Generator")
 
 connect_db(app)
 
